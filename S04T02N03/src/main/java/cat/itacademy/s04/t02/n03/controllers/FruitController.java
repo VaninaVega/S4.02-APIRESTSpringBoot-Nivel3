@@ -11,38 +11,37 @@ import java.util.List;
 @RequestMapping("/fruits")
 public class FruitController {
 
-        private final FruitService service;
+    private final FruitService service;
 
-        public FruitController(FruitService service) {
-            this.service = service;
-        }
-
-        @PostMapping
-        public ResponseEntity<Fruit> addFruit(@RequestBody Fruit fruit) {
-            return ResponseEntity.ok(service.addFruit(fruit));
-        }
-
-        @PutMapping("/update")
-        public ResponseEntity<Fruit> updateFruit(@RequestBody Fruit fruit) {
-            return ResponseEntity.ok(service.updateFruit(fruit));
-        }
-
-        @DeleteMapping("/{id}")
-        public ResponseEntity<String> deleteFruit(@PathVariable String id) {
-            service.deleteFruit(id);
-            return ResponseEntity.ok("Deleted successfully");
-        }
-
-        @GetMapping
-        public ResponseEntity<Fruit> getFruit(@PathVariable String id) {
-            return service.getFruitById(id)
-                    .map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build());
-        }
-
-        @GetMapping
-        public ResponseEntity<List<Fruit>> getAll() {
-            return ResponseEntity.ok(service.getAllFruit());
-        }
+    public FruitController(FruitService service) {
+        this.service = service;
     }
+
+    @PostMapping
+    public ResponseEntity<Fruit> addFruit(@RequestBody Fruit fruit) {
+        return ResponseEntity.ok(service.addFruit(fruit));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Fruit> updateFruit(@RequestBody Fruit fruit) {
+        return ResponseEntity.ok(service.updateFruit(fruit));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteFruit(@PathVariable String id) {
+        service.deleteFruit(id);
+        return ResponseEntity.ok("Deleted successfully");
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Fruit> getFruit(@PathVariable String id) {
+        Fruit fruit = service.getFruitById(id);
+        return ResponseEntity.ok(fruit);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Fruit>> getAll() {
+        return ResponseEntity.ok(service.getAllFruit());
+    }
+}
 
